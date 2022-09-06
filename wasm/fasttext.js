@@ -26,12 +26,18 @@ const _initFastTextModule = async function () {
   return true
 }
 
+let hasRun = false;
 let postRunFunc = null;
 const addOnPostRun = function (func) {
-  postRunFunc = func;
+  if (hasRun) {
+    func();
+  } else {
+    postRunFunc = func;
+  }
 };
 
 _initFastTextModule().then((res) => {
+  hasRun = true;
   if (postRunFunc) {
     postRunFunc();
   }
